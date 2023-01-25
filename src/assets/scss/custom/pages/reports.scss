@@ -1,0 +1,84 @@
+.form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+element.style {
+    display: block;
+    height: 160px;
+    width: 518px;
+}
+.chartjs-render-monitor {
+    animation: chartjs-render-animation 1ms;
+}
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df!important;
+}
+.pb-2, .py-2 {
+    padding-bottom: 0.5rem!important;
+}
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+}
+.align-items-center {
+    align-items: center!important;
+}
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+.no-gutters>.col, .no-gutters>[class*=col-] {
+    padding-right: 0;
+    padding-left: 0;
+}
+.mr-2, .mx-2 {
+    margin-right: 0.5rem!important;
+}
+.col {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.text-xs {
+    font-size: .7rem;
+}
+.text-primary {
+    color: #4e73df!important;
+}
+.font-weight-bold {
+    font-weight: 700!important;
+}
+.text-gray-800 {
+    color: #5a5c69!important;
+}
+.font-weight-bold {
+    font-weight: 700!important;
+}
+.mb-0, .my-0 {
+    margin-bottom: 0!important;
+}
+.h5, h5 {
+    font-size: 1.25rem;
+}
+.no-gutters>.col, .no-gutters>[class*=col-] {
+    padding-right: 0;
+    padding-left: 0;
+}
+.mr-2, .mx-2 {
+    margin-right: 0.5rem!important;
+}
+.col {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.nombres-estudiantes{
+    padding-left: 30px;
+}
+
+.dashboard-modal{
+    --width: 90%;
+    --height: 90%;
+}

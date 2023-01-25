@@ -1,0 +1,7 @@
+{
+  "name": "Titulacion",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
