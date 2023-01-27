@@ -89,7 +89,7 @@ const Login: React.FC = (props: any) => {
                                                 <IonLabel position="floating">Password</IonLabel>
                                                 <IonInput value={password} type="password" onIonChange={(e: any) => setPassword(e.detail.value!)} required />
                                             </IonItem>
-                                            <div className="ion-text-right text-muted my-3 mr-2">
+                                            {/* <div className="ion-text-right text-muted my-3 mr-2">
                                                 <span>
                                                     <Link
                                                         className="text-primary"
@@ -98,8 +98,8 @@ const Login: React.FC = (props: any) => {
                                                         ¿Se te olvidó tu contraseña?
                                                     </Link>
                                                 </span>
-                                            </div>
-                                            <IonButton className="mx-3" shape="round" expand="block" type="submit" color="primary">
+                                            </div> */}
+                                            <IonButton className="mx-3 mt-4" shape="round" expand="block" type="submit" color="primary">
                                                 Inicia sesión
                                             </IonButton>
 

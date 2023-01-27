@@ -65,8 +65,8 @@ const Menu: React.FC = (props: any) => {
 
 
   return (
-    <IonMenu contentId="main-content"  side='start'>
-      <IonContent>
+    <IonMenu contentId="main"  side="start" type="overlay">
+      <IonContent >
         <img src={temonet} width="200" />
         <IonListHeader></IonListHeader>
         {appPages.map((appPage, index) => {

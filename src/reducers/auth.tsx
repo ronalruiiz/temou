@@ -34,8 +34,6 @@ export default function authentication(state = INITIAL_STATE, action:any) {
             return {
                 ...state,
                 user: action.payload.user,
-                default_address: action.payload.default_address,
-                currency_symbol: action.payload.currency_symbol,
                 auth_token: action.payload.auth_token
             };
         case authConstants.REGISTER_FAILURE:

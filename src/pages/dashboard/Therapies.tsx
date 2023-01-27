@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonCard, IonContent, IonHeader, IonItem, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonList, IonContent, IonHeader, IonItem, IonMenuButton, IonPage, IonTitle, IonToolbar,IonLabel } from '@ionic/react';
 import { useParams } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import temonet from '../images/img-temonet-logo-sf.png'
@@ -36,6 +36,17 @@ const Therapies: React.FC = (props: any) => {
         </IonHeader>
         <ExploreContainer name={name} />
         
+        <IonList lines="full">
+        <IonItem>
+          <IonLabel>Full Lines</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>Full Lines</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonLabel>Full Lines</IonLabel>
+        </IonItem>
+      </IonList>
       </IonContent>
     </IonPage>
   );

@@ -1,4 +1,4 @@
-import { IonAvatar, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAvatar, IonButton, IonButtons, IonCol, IonContent,IonDatetime,IonSelect,IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { close } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { removeCustomer, saveCustomer, searchCustomers } from './TerapiaSuperficialApi';
@@ -15,8 +15,9 @@ const CreateTherarapy: React.FC = (props: any) => {
 
   const [clientes, setClientes] = useState<any>([]);
   const [customer, setCustomer] = useState<any>({});
-
-
+  const [expiration, setExpiration] = useState<any>([]);
+  const [visibility,setVisibility] = useState<any>([]);
+  
   const modal = useRef<HTMLIonModalElement>(null);
   const modal2 = useRef<HTMLIonModalElement>(null);
 
@@ -54,10 +55,9 @@ const CreateTherarapy: React.FC = (props: any) => {
     props.store({
       name: name,
       description: description,
-      user_id: 1,
-      visibility: false,
-      type: "Superficial",
-      expiration: moment().format("D-M-Y")
+      visibility: Boolean(visibility),
+      type: type,
+      expiration: moment(expiration).format("D-M-Y")
     })
   }
 
@@ -70,7 +70,6 @@ const CreateTherarapy: React.FC = (props: any) => {
           </IonButtons>
           <IonRow>
             <IonTitle style={{ textTransform: "capitalize" }}>Crear Terapia {type}</IonTitle>
-
             <IonItem>
               <IonAvatar slot="start">
                 <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
@@ -81,33 +80,52 @@ const CreateTherarapy: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonRow style={{ padding: "10px", }} >
-          <IonCol size-sm="12" size-md="6" size="12">
-            <IonItem fill="outline">
-              <IonLabel position="floating">Titulo terapia</IonLabel>
-              <IonInput value={name} onIonChange={(e: any) => SetName(e.detail.value!)} required type='text' placeholder="¿Como se llamara la terapia?" > </IonInput>
-            </IonItem>
+        <IonRow className='justify-content-center' style={{ margin: "15px", }} >
+          <IonCol size-sm="12" size-md="7" size="12">
+            <IonRow >
+              <IonCol size-sm="12" size-md="12" size="12">
+                <IonItem fill="outline">
+                  <IonLabel position="floating">Titulo terapia</IonLabel>
+                  <IonInput value={name} onIonChange={(e: any) => SetName(e.detail.value!)} required type='text' placeholder="¿Cómo se llamara la terapia?" > </IonInput>
+                </IonItem>
+              </IonCol>
+              <IonCol size-sm="12" size-md="12" size="12">
+                <IonItem fill="solid" >
+                  <IonLabel position="floating">Descripción</IonLabel>
+                  <IonTextarea value={description} onIonChange={(e: any) => SetDescription(e.detail.value!)} placeholder="Breve descripcion de la terapia que estas creando." > </IonTextarea>
+                </IonItem>
+              </IonCol>
+              <IonCol size-sm="12" size-md="12" size="12">
+                <IonList className='mt-4'>
+                  {clientes.map((cliente: any) =>
+                    <IonItem>
+                      <IonLabel>{cliente.text}</IonLabel>
+                      <IonIcon onClick={() => remove(cliente.id)} icon={close} slot="end"></IonIcon>
+                    </IonItem>
+
+                  )}
+                </IonList>
+              </IonCol>
+            </IonRow> 
+          </IonCol>
+          <IonCol size-sm="12" size-md="3" size="12">
+          <IonRow >
+              <IonCol size-sm="12" size-md="12" size="12">
+                <IonItem fill="outline">
+                  <IonLabel position="floating">Visibilidad</IonLabel>
+                  <IonSelect placeholder="Select Visibilidad" onIonChange={(e) => setVisibility(e.detail.value)}>
+                    <IonSelectOption value="true">Pública</IonSelectOption>
+                    <IonSelectOption value="false">Privada</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+              </IonCol>
+              <IonCol size-sm="12" size-md="12" size="12">
+                <IonDatetime onIonChange={(event:any)=>setExpiration(event.value)}></IonDatetime>
+              </IonCol>
+              
+          </IonRow>
           </IonCol>
         </IonRow>
-        <IonRow style={{ padding: "10px", }} >
-          <IonCol size-sm="12" size-md="6" size="12">
-            <IonItem fill="solid" >
-              <IonLabel position="floating">Descripción</IonLabel>
-              <IonTextarea value={description} onIonChange={(e: any) => SetDescription(e.detail.value!)} placeholder="Breve descripcion de la terapia que estas creando." > </IonTextarea>
-            </IonItem>
-          </IonCol>
-        </IonRow>
-
-        <IonList>
-          {clientes.map((cliente: any) =>
-            <IonItem>
-              <IonLabel>{cliente.text}</IonLabel>
-              <IonIcon onClick={() => remove(cliente.id)} icon={close} slot="end"></IonIcon>
-            </IonItem>
-
-          )}
-        </IonList>
-
       </IonContent>
       <IonItem className='botones'>
 
