@@ -27,17 +27,7 @@ const ReportesdeResultado: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonItem>
-          <IonTitle>Reportes de Resultados          
-          </IonTitle>
-          <IonItem>
-        <IonAvatar slot="start">
-          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </IonAvatar>
-        <IonLabel>Item Avatar</IonLabel>
-      </IonItem>
-          </IonItem>
-          
+          <IonTitle>Reportes de Resultados</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

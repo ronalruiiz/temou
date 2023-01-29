@@ -1,7 +1,9 @@
-import { IonAvatar, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader,IonGrid, IonCol, 
-  IonRow, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useLocation,useHistory  } from 'react-router-dom';
-import { clipboardOutline,menu } from 'ionicons/icons';
+import {
+  IonAvatar, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonGrid, IonCol,
+  IonRow, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonTitle, IonToolbar
+} from '@ionic/react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { clipboardOutline, menu } from 'ionicons/icons';
 
 interface AppContent {
   title: string;
@@ -38,8 +40,8 @@ const appContent: AppContent[] = [
 ]
 
 
-const TypeTherapy: React.FC = (props:any) => {
-  
+const TypeTherapy: React.FC = (props: any) => {
+
   const history = useHistory();
   const location = useLocation();
   return (
@@ -49,15 +51,7 @@ const TypeTherapy: React.FC = (props:any) => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonItem>
-            <IonTitle>Crear Terapia</IonTitle>
-            <IonItem>
-              <IonAvatar slot="start">
-                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-              </IonAvatar>
-              <IonLabel>Item Avatar</IonLabel>
-            </IonItem>
-          </IonItem>
+          <IonTitle>Crear Terapia</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonHeader collapse="condense">
@@ -73,24 +67,24 @@ const TypeTherapy: React.FC = (props:any) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-      <IonGrid>
-        <IonRow>
-          {appContent.map((appContents) => {
-            return (
-              <IonCol key={appContents.title} size-sm="12" size-md="6" size="12">
-                <IonCard id='cont-cont' routerLink={"/dashboard/createtherapy/"+appContents.title}>
-                  <IonCardHeader>
-                    <IonCardTitle style={{textTransform:"capitalize"}} > {appContents.title} </IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent>
-                    <IonIcon slot="start" md={appContents.mdIcon} />{appContents.desc}
-                  </IonCardContent>
-                </IonCard>
-              </IonCol>
-            );
-          })}
-        </IonRow>
-      </IonGrid>
+        <IonGrid>
+          <IonRow>
+            {appContent.map((appContents) => {
+              return (
+                <IonCol key={appContents.title} size-sm="12" size-md="6" size="12">
+                  <IonCard id='cont-cont' routerLink={"/dashboard/createtherapy/" + appContents.title}>
+                    <IonCardHeader>
+                      <IonCardTitle style={{ textTransform: "capitalize" }} > {appContents.title} </IonCardTitle>
+                    </IonCardHeader>
+                    <IonCardContent>
+                      <IonIcon slot="start" md={appContents.mdIcon} />{appContents.desc}
+                    </IonCardContent>
+                  </IonCard>
+                </IonCol>
+              );
+            })}
+          </IonRow>
+        </IonGrid>
       </IonContent>
 
     </IonPage>

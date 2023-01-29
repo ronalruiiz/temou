@@ -71,15 +71,7 @@ const CreateTherarapy: React.FC = (props: any) => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonRow>
             <IonTitle style={{ textTransform: "capitalize" }}>Crear Terapia {type}</IonTitle>
-            <IonItem>
-              <IonAvatar slot="start">
-                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-              </IonAvatar>
-              <IonLabel>Item Avatar</IonLabel>
-            </IonItem>
-          </IonRow>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

@@ -3,13 +3,14 @@ import {
   IonIcon,
   IonItem,
   IonLabel,
-  IonListHeader,
+  IonAvatar,
   IonMenu,
+  IonItemDivider,
   IonMenuToggle,
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { apps,key, appsOutline, body, bodyOutline, construct, constructOutline, home, homeOutline, statsChart, statsChartOutline } from 'ionicons/icons';
+import { apps, key, appsOutline, body, bodyOutline, construct, constructOutline, home, homeOutline, statsChart, statsChartOutline } from 'ionicons/icons';
 import './Menu.css';
 import temonet from './images/img-temonet-sf.png'
 import actions from '../actions/auth';
@@ -63,12 +64,18 @@ const Menu: React.FC = (props: any) => {
     window.location.href = '/auth/login'
   }
 
-
   return (
-    <IonMenu contentId="main"  side="start" type="overlay">
+    <IonMenu contentId="main" side="start" type="overlay">
       <IonContent >
         <img src={temonet} width="200" />
-        <IonListHeader></IonListHeader>
+        <IonItemDivider className='mt-3 my-4'>
+        <IonItem lines="none" className='mb-2'>
+          <IonAvatar slot="start">
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </IonAvatar>
+          <IonLabel className='text-capitalize'>{props?.state?.user?.name}</IonLabel>
+        </IonItem>
+        </IonItemDivider>
         {appPages.map((appPage, index) => {
           return (
             <IonMenuToggle key={index} autoHide={false}>
@@ -80,12 +87,13 @@ const Menu: React.FC = (props: any) => {
 
           );
         })}
+        <IonItemDivider/>
         <IonMenuToggle key={`logout`} autoHide={false}>
-              <IonItem button routerDirection="none" lines="none" onClick={()=>logout()}>
-                <IonIcon slot="start" ios={key} md={key} />
-                <IonLabel>Cerrar Sesión</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
+          <IonItem className='mt-4' button routerDirection="none" lines="none" onClick={() => logout()}>
+            <IonIcon slot="start" ios={key} md={key} />
+            <IonLabel>Cerrar Sesión</IonLabel>
+          </IonItem>
+        </IonMenuToggle>
       </IonContent>
     </IonMenu>
   );
