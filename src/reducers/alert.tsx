@@ -18,7 +18,9 @@ export default function alert(state = INITIAL_STATE, action) {
             };
         case authConstants.CLEAR:
             return {
-            };
+                ...state,
+                message: null
+            }
         default:
             return state
     }

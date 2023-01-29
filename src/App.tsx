@@ -24,6 +24,7 @@ import './theme/variables.css';
 import Login from './pages/auth/Login';
 import Dashboard from './pages/dashboard/Index';
 import RestrictedRoute from './helpers/restrictedRoutes';
+import FormTherapy from './pages/form/FormTherapy';
 
 setupIonicReact();
 
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <RestrictedRoute path='/' exact={true}/>
           <Route path={`/auth/login`} component={Login} exact={true}/>
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/form/:id" component={FormTherapy} />
         </IonRouterOutlet>  
       </IonReactRouter>
     </IonApp>

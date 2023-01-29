@@ -11,6 +11,7 @@
     "@capacitor/status-bar": "4.0.1",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
+    "@redux-devtools/extension": "^3.2.5",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
@@ -78,6 +79,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "4.1.0",
+    "@redux-devtools/core": "^3.13.1",
     "@types/uuid": "^8.3.4",
     "react-scripts": "5.0.1"
   },

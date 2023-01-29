@@ -7,20 +7,18 @@ export const index = (history:any) => async (dispatch:any) => {
         const response  = await axios.get('/therapy');
     }catch (e:any) {
         const response = e.response.data
-        dispatch({ type: therapyConstant.STORE_FAILURE, payload: response.message });
+        dispatch({ type: therapyConstant.STORE_INDEX, payload: response.message });
         history.replace('/')
     }
     
 }
 
+export const clear = () =>({ type: therapyConstant.CLEAR_MESSAGE })
+
 export const store = (formData:any, history:any) => async (dispatch:any) => {
     try {
         const response  = await axios.post('/therapy', formData);
-        const therapy_data = response.data
-        console.log(therapy_data)
-        await dispatch({ type: therapyConstant.STORE_SUCCESS, payload: therapy_data })
-
-        history.replace('/')
+        await dispatch({ type: therapyConstant.STORE_SUCCESS, payload: response })
 
     }catch (e:any) {
         const response = e.response.data
@@ -31,5 +29,6 @@ export const store = (formData:any, history:any) => async (dispatch:any) => {
 
 export default {
     store,
-    index
+    index,
+    clear
 }

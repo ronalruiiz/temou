@@ -1,4 +1,4 @@
-import { IonAvatar, IonButton, IonButtons, IonCol, IonContent,IonDatetime,IonSelect,IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAvatar, IonButton, IonButtons, IonCol, IonContent,IonDatetime,IonToast,IonSelect,IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { close } from 'ionicons/icons';
 import { useEffect, useRef, useState } from 'react';
 import { removeCustomer, saveCustomer, searchCustomers } from './TerapiaSuperficialApi';
@@ -10,7 +10,7 @@ import moment from 'moment'
 const CreateTherarapy: React.FC = (props: any) => {
   let { type }: any = useParams();
 
-  const [name, SetName] = useState("");
+  const [name, setName] = useState("");
   const [description, SetDescription] = useState("");
 
   const [clientes, setClientes] = useState<any>([]);
@@ -30,17 +30,19 @@ const CreateTherarapy: React.FC = (props: any) => {
     search();
   }, []);
 
-
   const search = () => {
     let result = searchCustomers();
     setClientes(result);
+  }
+
+  const clear = () => {
+    props.clear()
   }
 
   const remove = (id: string) => {
     removeCustomer(id);
     search();
   }
-
 
   const save = () => {
     customer.id = Math.round(Math.random() * 100000);
@@ -56,9 +58,10 @@ const CreateTherarapy: React.FC = (props: any) => {
       name: name,
       description: description,
       visibility: Boolean(visibility),
-      type: type,
+      type: type?.toLowerCase(),
       expiration: moment(expiration).format("D-M-Y")
     })
+
   }
 
   return (
@@ -86,7 +89,7 @@ const CreateTherarapy: React.FC = (props: any) => {
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonItem fill="outline">
                   <IonLabel position="floating">Titulo terapia</IonLabel>
-                  <IonInput value={name} onIonChange={(e: any) => SetName(e.detail.value!)} required type='text' placeholder="¿Cómo se llamara la terapia?" > </IonInput>
+                  <IonInput value={name} onIonChange={(e: any) => setName(e.detail.value!)} required type='text' placeholder="¿Cómo se llamara la terapia?" > </IonInput>
                 </IonItem>
               </IonCol>
               <IonCol size-sm="12" size-md="12" size="12">
@@ -122,10 +125,29 @@ const CreateTherarapy: React.FC = (props: any) => {
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonDatetime onIonChange={(event:any)=>setExpiration(event.value)}></IonDatetime>
               </IonCol>
-              
           </IonRow>
           </IonCol>
         </IonRow>
+        {props.state.statusMsg && (
+					<IonToast
+						isOpen={(props.state.statusMsg)?true:false}
+						duration={4000}
+						keyboardClose={true}
+            onDidDismiss={() => clear()}
+						buttons={[
+							{
+								text: 'Cerrar',
+								role: 'cancel',
+                handler: () => {
+									clear()
+								}
+							}
+						]}
+						message={props.state.statusMsg}
+						position="bottom"
+					/>
+				)}
+				{}
       </IonContent>
       <IonItem className='botones'>
 

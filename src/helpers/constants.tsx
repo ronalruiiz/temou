@@ -1,5 +1,6 @@
 export const apiConstants = {
     baseUrl: process.env.NODE_ENV === 'production' ? 'https://temonetback.test/api' : 'https://temonetback.test/api',
+    clientUrl:"http://localhost:3000"
 }
 
 export const authConstants = {
@@ -21,12 +22,15 @@ export const authConstants = {
 };
 
 
+
 export const therapyConstant = {
+    STORE_INDEX:"THERAPY_STORE_INDEX",
     STORE_REQUEST:"THERAPY_STORE_REQUEST",
     STORE_SUCCESS:"THERAPY_STORE_SUCCESS",
     STORE_FAILURE:"THERAPY_STORE_FAILURE",
     INDEX_REQUEST:"THERAPY_INDEX_REQUEST",
     INDEX_FAILURE:"THERAPY_INDEX_FAILURE",
+    CLEAR_MESSAGE:"THERAPY_CLEAR_MESSAGE"
 }
 
 export const alertConstants = {

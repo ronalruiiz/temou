@@ -19,7 +19,6 @@ import {
 import React, { useState } from "react";
 import actions from '../../actions/auth';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import "../../assets/scss/custom/pages/login.scss"
 import { logInSharp, personAddSharp } from 'ionicons/icons';
 
@@ -163,9 +162,9 @@ const Login: React.FC = (props: any) => {
                         </IonCol>
                     </IonRow>
                 </IonGrid>
-                {props.state.errorMsg && (
+                {props.state.statusMsg && (
 					<IonToast
-						isOpen={(props.state.errorMsg)?true:false}
+						isOpen={(props.state.statusMsg)?true:false}
 						duration={4000}
 						onDidDismiss={() => clear()}
 						keyboardClose={true}
@@ -178,7 +177,7 @@ const Login: React.FC = (props: any) => {
 								}
 							}
 						]}
-						message={props.state.errorMsg}
+						message={props.state.statusMsg}
 						position="bottom"
 					/>
 				)}

@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import rootReducer from '../reducers';
+import { composeWithDevTools } from '@redux-devtools/extension';
 
 
 const persistConfig = {
@@ -18,6 +19,6 @@ const middleware = compose(
     // ,(window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-const store = createStore(pReducer, {}, middleware);
+const store = createStore(pReducer, {}, composeWithDevTools(middleware));
 const persistor = persistStore(store);
 export { persistor, store };

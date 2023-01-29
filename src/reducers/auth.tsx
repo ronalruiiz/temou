@@ -19,12 +19,12 @@ export default function authentication(state = INITIAL_STATE, action:any) {
         case authConstants.LOGIN_FAILURE:
             return {
                 ...state,
-                errorMsg: action.payload
+                statusMsg: action.payload
             };
         case authConstants.SET_ERROR_MSG:
             return {
                 ...state,
-                errorMsg: action.payload
+                statusMsg: action.payload
             };
         case authConstants.LOGOUT:
             return {};
@@ -39,12 +39,12 @@ export default function authentication(state = INITIAL_STATE, action:any) {
         case authConstants.REGISTER_FAILURE:
             return {
                 ...state,
-                errorMsg: action.payload
+                statusMsg: action.payload
             };
         case authConstants.REGISTER_REQUEST:
             return {
                 ...state,
-                request: action.payload
+                statusMsg: action.payload
             };
             
         default:
