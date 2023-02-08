@@ -9,8 +9,8 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
+      <IonHeader >
+        <IonToolbar >
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>

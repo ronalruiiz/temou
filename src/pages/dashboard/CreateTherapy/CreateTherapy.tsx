@@ -1,11 +1,12 @@
-import { IonAvatar, IonButton, IonButtons, IonCol, IonContent,IonDatetime,IonToast,IonSelect,IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
-import { close } from 'ionicons/icons';
+import { IonButton, IonButtons, IonFabButton, IonFab, IonCol, IonFabList, IonContent, IonDatetime, IonToast, IonSelect, IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { removeCustomer, saveCustomer, searchCustomers } from './TerapiaSuperficialApi';
 import { useParams } from "react-router-dom";
 import { connect } from 'react-redux';
 import actions from '../../../actions/therapy';
 import moment from 'moment'
+import { add, close, chevronUp, documentText, imageOutline, save } from 'ionicons/icons';
+
 
 const CreateTherarapy: React.FC = (props: any) => {
   let { type }: any = useParams();
@@ -16,8 +17,8 @@ const CreateTherarapy: React.FC = (props: any) => {
   const [clientes, setClientes] = useState<any>([]);
   const [customer, setCustomer] = useState<any>({});
   const [expiration, setExpiration] = useState<any>([]);
-  const [visibility,setVisibility] = useState<any>([]);
-  
+  const [visibility, setVisibility] = useState<any>([]);
+
   const modal = useRef<HTMLIonModalElement>(null);
   const modal2 = useRef<HTMLIonModalElement>(null);
 
@@ -44,7 +45,7 @@ const CreateTherarapy: React.FC = (props: any) => {
     search();
   }
 
-  const save = () => {
+  const addText = () => {
     customer.id = Math.round(Math.random() * 100000);
     saveCustomer(customer)
     dismiss();
@@ -71,7 +72,7 @@ const CreateTherarapy: React.FC = (props: any) => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-            <IonTitle style={{ textTransform: "capitalize" }}>Crear Terapia {type}</IonTitle>
+          <IonTitle style={{ textTransform: "capitalize" }}>Crear Terapia {type}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -101,10 +102,10 @@ const CreateTherarapy: React.FC = (props: any) => {
                   )}
                 </IonList>
               </IonCol>
-            </IonRow> 
+            </IonRow>
           </IonCol>
           <IonCol size-sm="12" size-md="3" size="12">
-          <IonRow >
+            <IonRow >
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonItem fill="outline">
                   <IonLabel position="floating">Visibilidad</IonLabel>
@@ -115,49 +116,52 @@ const CreateTherarapy: React.FC = (props: any) => {
                 </IonItem>
               </IonCol>
               <IonCol size-sm="12" size-md="12" size="12">
-                <IonDatetime onIonChange={(event:any)=>setExpiration(event.value)}></IonDatetime>
+                <IonDatetime onIonChange={(event: any) => setExpiration(event.value)}></IonDatetime>
               </IonCol>
-          </IonRow>
+            </IonRow>
           </IonCol>
         </IonRow>
         {props.state.statusMsg && (
-					<IonToast
-						isOpen={(props.state.statusMsg)?true:false}
-						duration={4000}
-						keyboardClose={true}
+          <IonToast
+            isOpen={(props.state.statusMsg) ? true : false}
+            duration={4000}
+            keyboardClose={true}
             onDidDismiss={() => clear()}
-						buttons={[
-							{
-								text: 'Cerrar',
-								role: 'cancel',
+            buttons={[
+              {
+                text: 'Cerrar',
+                role: 'cancel',
                 handler: () => {
-									clear()
-								}
-							}
-						]}
-						message={props.state.statusMsg}
-						position="bottom"
-					/>
-				)}
-				{}
-      </IonContent>
-      <IonItem className='botones'>
+                  clear()
+                }
+              }
+            ]}
+            message={props.state.statusMsg}
+            position="bottom"
+          />
+        )}
+        { }
 
-        <IonItem>
-          <IonButton id="open-custom-dialog" expand="block">
-            Ingresar Texto
-          </IonButton>
-          <IonButton id="open-button-op" expand="block">
-            Imagen + opciones
-          </IonButton>
-          <IonButton id="open-button-check" expand="block">
-            Imagen + Check
-          </IonButton>
-          <IonButton onClick={onRSubmit} id="open-button-guardar" expand="block">
-            Guardar
-          </IonButton>
-        </IonItem>
-      </IonItem>
+        <IonFab slot="fixed" vertical="bottom" horizontal="center" >
+          <IonFabButton>
+            <IonIcon icon={add}></IonIcon>
+          </IonFabButton>
+          <IonFabList side="top">
+            <IonFabButton onClick={onRSubmit} id="open-button-guardar">
+              <IonIcon icon={save}></IonIcon>
+            </IonFabButton>
+            <IonFabButton id="open-custom-dialog">
+              <IonIcon icon={documentText}></IonIcon>
+            </IonFabButton>
+            <IonFabButton id="open-button-op">
+              <IonIcon icon={imageOutline}></IonIcon>
+            </IonFabButton>
+            <IonFabButton id="open-button-check">
+              <IonIcon icon={chevronUp}></IonIcon>
+            </IonFabButton>
+          </IonFabList>
+        </IonFab>
+      </IonContent>
 
       <IonPopover trigger="open-button-op" reference="trigger" side="top" alignment="center" dismissOnSelect={true}>
         <IonContent  >
@@ -174,7 +178,7 @@ const CreateTherarapy: React.FC = (props: any) => {
 
       <IonModal className='modal-texto' id="example-modal" ref={modal2} trigger="open-options-dialog" >
         <IonToolbar>
-          <IonButton onClick={save} slot='end'>Guardar</IonButton>
+          <IonButton onClick={addText} slot='end'>Guardar</IonButton>
           <IonButton onClick={dismiss} slot='end'>Cancelar</IonButton>
         </IonToolbar>
       </IonModal>
@@ -192,16 +196,24 @@ const CreateTherarapy: React.FC = (props: any) => {
         </IonContent>
       </IonPopover>
 
-      <IonModal className='modal-texto' id="example-modal" ref={modal} trigger="open-custom-dialog" >
+      <IonModal className='modal-texto' ref={modal} trigger="open-custom-dialog" >
         <IonHeader >
-          <IonItem >
-            <IonTextarea className='textarea-modal' onIonChange={e => customer.text = e.detail.value}  ></IonTextarea>
-          </IonItem>
+          <IonToolbar className='px-2'>
+            <IonButtons slot='start'>
+              <IonButton onClick={addText} >Guardar</IonButton>
+            </IonButtons>
+
+            <IonButtons slot='end'>
+              <IonButton onClick={dismiss} >Cancelar</IonButton>
+            </IonButtons>
+          </IonToolbar>
         </IonHeader>
-        <IonToolbar>
-          <IonButton onClick={save} slot='end'>Guardar</IonButton>
-          <IonButton onClick={dismiss} slot='end'>Cancelar</IonButton>
-        </IonToolbar>
+        <IonContent className="ion-padding">
+          <IonItem >
+            <IonLabel position="stacked">Ingrese el texto</IonLabel>
+            <IonTextarea onIonChange={e => customer.text = e.detail.value}  ></IonTextarea>
+          </IonItem>
+        </IonContent>
       </IonModal>
     </IonPage>
   );

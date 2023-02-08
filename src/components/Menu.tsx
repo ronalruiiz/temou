@@ -3,15 +3,17 @@ import {
   IonIcon,
   IonItem,
   IonLabel,
-  IonAvatar,
+  IonList,
+  IonListHeader,
   IonMenu,
   IonItemDivider,
   IonMenuToggle,
+  IonNote,
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
 import { apps, key, appsOutline, body, bodyOutline, construct, constructOutline, home, homeOutline, statsChart, statsChartOutline } from 'ionicons/icons';
-import './Menu.css';
+import './Menu.scss';
 import temonet from './images/img-temonet-sf.png'
 import actions from '../actions/auth';
 import { connect } from 'react-redux';
@@ -68,28 +70,26 @@ const Menu: React.FC = (props: any) => {
     <IonMenu contentId="main" side="start" type="overlay">
       <IonContent >
         <img src={temonet} width="200" />
-        <IonItemDivider className='mt-3 my-4'>
-        <IonItem lines="none" className='mb-2'>
-          <IonAvatar slot="start">
-            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-          </IonAvatar>
-          <IonLabel className='text-capitalize'>{props?.state?.user?.name}</IonLabel>
-        </IonItem>
-        </IonItemDivider>
-        {appPages.map((appPage, index) => {
-          return (
-            <IonMenuToggle key={index} autoHide={false}>
-              <IonItem button className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                <IonLabel>{appPage.title}</IonLabel>
-              </IonItem>
-            </IonMenuToggle>
 
-          );
-        })}
-        <IonItemDivider/>
+        <IonList id="inbox-list">
+          <IonListHeader >Bienvenido {props?.state?.user?.name}</IonListHeader>
+          <IonNote>{props?.state?.user?.email}</IonNote>
+
+          {appPages.map((appPage, index) => {
+            return (
+              <IonMenuToggle key={index} autoHide={false}>
+                <IonItem button className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                  <IonLabel>{appPage.title}</IonLabel>
+                </IonItem>
+              </IonMenuToggle>
+
+            );
+          })}
+        </IonList>
+       
         <IonMenuToggle key={`logout`} autoHide={false}>
-          <IonItem className='mt-4' button routerDirection="none" lines="none" onClick={() => logout()}>
+          <IonItem className='mt-3' button routerDirection="none" lines="none" onClick={() => logout()}>
             <IonIcon slot="start" ios={key} md={key} />
             <IonLabel>Cerrar Sesión</IonLabel>
           </IonItem>

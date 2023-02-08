@@ -115,3 +115,23 @@ ion-item.selected {
 ion-menu {
   --side-width: 20%;
 }
+
+ion-menu {
+  --ion-background-color: rgb(241, 241, 241) !important; ;
+
+  ion-toolbar {
+    --background: rgb(241, 241, 241) !important; ;
+  }
+
+  ion-list {/* optional, but it needs when you use gradient as a background color.*/
+    background: transparent;
+  }
+}
+
+ion-list-header{
+  font-size: 18.5px !important;
+}
+
+ion-note{
+  font-size: 14.5px !important;
+}

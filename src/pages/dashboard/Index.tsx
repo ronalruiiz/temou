@@ -15,7 +15,7 @@ interface RouteProps {
 }
   
 const DashboardIndex: React.FC<RouteProps> = ({ match }) => (
-    <IonSplitPane contentId="main">
+    <IonSplitPane contentId="main" when="xs">
             <Menu />
             <IonRouterOutlet id='main'>
                 <Redirect exact from={`${match.url}/`} to={`${match.url}/home`} />

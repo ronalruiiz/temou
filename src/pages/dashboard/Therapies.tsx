@@ -20,9 +20,14 @@ const Therapies: React.FC = (props: any) => {
       const response = await axios.get("/therapy")
       setTherapies(response.data)
     }
-    getTherapies();
-
+    getTherapies()
   }, []);
+
+  const deleteTherapy = async (id) => {
+    const response = await axios.delete("/therapy/"+id)
+    setTherapies(response.data)
+    
+  }
 
   return (
     <IonPage>
@@ -68,7 +73,7 @@ const Therapies: React.FC = (props: any) => {
                       {therapy.description}
                       </IonCardContent>
                       {/* <IonButton fill="clear">Editar</IonButton> */}
-                      <IonButton fill="clear">Eliminar</IonButton>
+                      <IonButton onClick={(()=>deleteTherapy(therapy.id))} fill="clear">Eliminar</IonButton>
                       <IonButton  onClick={()=>navigator.clipboard.writeText(apiConstants.clientUrl+"/form/"+therapy.id)} fill="clear">Copiar URL</IonButton>
                     </IonCard>
                   </IonCol>)

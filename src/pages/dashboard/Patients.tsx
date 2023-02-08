@@ -14,7 +14,7 @@ const Patients: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>Crear Terapia</IonTitle>
+          <IonTitle>Pacientes</IonTitle>
         </IonToolbar>
       </IonHeader>
 
