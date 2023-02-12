@@ -1,11 +1,20 @@
-import { IonButton, IonButtons, IonFabButton, IonFab, IonCol, IonFabList, IonContent, IonDatetime, IonToast, IonSelect, IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonFabButton, IonFab, IonCol, IonFabList, IonContent, IonDatetime, IonToast, IonSelect, IonSelectOption, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonTextarea, IonTitle, IonToolbar, IonText } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
-import { removeCustomer, saveCustomer, searchCustomers } from './TerapiaSuperficialApi';
+import { removeQuestion, saveQuestion, getQuestion } from './TherapyServices';
 import { useParams } from "react-router-dom";
 import { connect } from 'react-redux';
 import actions from '../../../actions/therapy';
 import moment from 'moment'
-import { add, close, chevronUp, documentText, imageOutline, save } from 'ionicons/icons';
+import { add, close, chevronUp, documentText, imageOutline, save, imageSharp } from 'ionicons/icons';
+import Question from '../../../components/Question';
+
+
+interface question{
+  id:number
+  options:string[]
+  response: number|number[]
+  type:string
+}
 
 
 const CreateTherarapy: React.FC = (props: any) => {
@@ -13,27 +22,32 @@ const CreateTherarapy: React.FC = (props: any) => {
 
   const [name, setName] = useState("");
   const [description, SetDescription] = useState("");
-
-  const [clientes, setClientes] = useState<any>([]);
-  const [customer, setCustomer] = useState<any>({});
-  const [expiration, setExpiration] = useState<any>([]);
   const [visibility, setVisibility] = useState<any>([]);
+  const [expiration, setExpiration] = useState<any>([]);
+
+
+  const [questions, setQuestions] = useState<any>([]);
+  const [question] = useState<question>({id:0,options:[],response:0,type:""});
+
 
   const modal = useRef<HTMLIonModalElement>(null);
   const modal2 = useRef<HTMLIonModalElement>(null);
+  const modal3 = useRef<HTMLIonModalElement>(null);
 
   function dismiss() {
     modal.current?.dismiss();
     modal2.current?.dismiss();
+    modal3.current?.dismiss();
   }
 
   useEffect(() => {
+    localStorage['questions'] = '[]';
     search();
   }, []);
 
   const search = () => {
-    let result = searchCustomers();
-    setClientes(result);
+    let result = getQuestion();
+    setQuestions(result);
   }
 
   const clear = () => {
@@ -41,15 +55,17 @@ const CreateTherarapy: React.FC = (props: any) => {
   }
 
   const remove = (id: string) => {
-    removeCustomer(id);
+    removeQuestion(id);
     search();
   }
 
   const addText = () => {
-    customer.id = Math.round(Math.random() * 100000);
-    saveCustomer(customer)
+    question.id = Math.round(Math.random() * 100000);
+    
+    saveQuestion(question)
     dismiss();
     search()
+    question.options = []
   }
 
   const onRSubmit = (e: any) => {
@@ -60,8 +76,10 @@ const CreateTherarapy: React.FC = (props: any) => {
       description: description,
       visibility: Boolean(visibility),
       type: type?.toLowerCase(),
+      questions:JSON.stringify(questions),
       expiration: moment(expiration).format("D-M-Y")
     })
+    localStorage['questions'] = '[]';
 
   }
 
@@ -93,10 +111,10 @@ const CreateTherarapy: React.FC = (props: any) => {
               </IonCol>
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonList className='mt-4'>
-                  {clientes.map((cliente: any) =>
-                    <IonItem>
-                      <IonLabel>{cliente.text}</IonLabel>
-                      <IonIcon onClick={() => remove(cliente.id)} icon={close} slot="end"></IonIcon>
+                  {questions.map((question: any,index) =>
+                    <IonItem key={index}>
+                      <Question question={question} />
+                      <IonIcon onClick={() => remove(question.id)} icon={close} slot="end"></IonIcon>
                     </IonItem>
 
                   )}
@@ -109,7 +127,7 @@ const CreateTherarapy: React.FC = (props: any) => {
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonItem fill="outline">
                   <IonLabel position="floating">Visibilidad</IonLabel>
-                  <IonSelect placeholder="Select Visibilidad" onIonChange={(e) => setVisibility(e.detail.value)}>
+                  <IonSelect placeholder="Seleccione Visibilidad" onIonChange={(e) => setVisibility(e.detail.value)}>
                     <IonSelectOption value="true">Pública</IonSelectOption>
                     <IonSelectOption value="false">Privada</IonSelectOption>
                   </IonSelect>
@@ -150,11 +168,14 @@ const CreateTherarapy: React.FC = (props: any) => {
             <IonFabButton onClick={onRSubmit} id="open-button-guardar">
               <IonIcon icon={save}></IonIcon>
             </IonFabButton>
-            <IonFabButton id="open-custom-dialog">
+            <IonFabButton id="open-text">
               <IonIcon icon={documentText}></IonIcon>
             </IonFabButton>
-            <IonFabButton id="open-button-op">
+            <IonFabButton id="open-image">
               <IonIcon icon={imageOutline}></IonIcon>
+            </IonFabButton>
+            <IonFabButton id="open-image2">
+              <IonIcon icon={imageSharp}></IonIcon>
             </IonFabButton>
             <IonFabButton id="open-button-check">
               <IonIcon icon={chevronUp}></IonIcon>
@@ -163,40 +184,8 @@ const CreateTherarapy: React.FC = (props: any) => {
         </IonFab>
       </IonContent>
 
-      <IonPopover trigger="open-button-op" reference="trigger" side="top" alignment="center" dismissOnSelect={true}>
-        <IonContent  >
-          <IonList>
-            <IonItem button={true} id="open-options-dialog">
-              Imagen + 2 Opciones
-            </IonItem>
-            <IonItem button={true} detail={false}>
-              Imagen + 3 Opciones
-            </IonItem>
-          </IonList>
-        </IonContent>
-      </IonPopover>
 
-      <IonModal className='modal-texto' id="example-modal" ref={modal2} trigger="open-options-dialog" >
-        <IonToolbar>
-          <IonButton onClick={addText} slot='end'>Guardar</IonButton>
-          <IonButton onClick={dismiss} slot='end'>Cancelar</IonButton>
-        </IonToolbar>
-      </IonModal>
-
-      <IonPopover trigger="open-button-check" reference="trigger" side="top" alignment="center" dismissOnSelect={true}>
-        <IonContent  >
-          <IonList>
-            <IonItem button={true} detail={false}>
-              Imagen + 2 Opciones
-            </IonItem>
-            <IonItem button={true} detail={false}>
-              Imagen + 3 Opciones
-            </IonItem>
-          </IonList>
-        </IonContent>
-      </IonPopover>
-
-      <IonModal className='modal-texto' ref={modal} trigger="open-custom-dialog" >
+      <IonModal className='modal-texto' id="example-modal" ref={modal2} trigger="open-image" >
         <IonHeader >
           <IonToolbar className='px-2'>
             <IonButtons slot='start'>
@@ -208,10 +197,81 @@ const CreateTherarapy: React.FC = (props: any) => {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
+
         <IonContent className="ion-padding">
-          <IonItem >
-            <IonLabel position="stacked">Ingrese el texto</IonLabel>
-            <IonTextarea onIonChange={e => customer.text = e.detail.value}  ></IonTextarea>
+            <input type="file"></input>
+          <IonItem className='mt-3' fill='outline'>
+            <IonLabel position="floating">Ingrese opción 1</IonLabel>
+            <IonInput onIonChange={(e:any) => question.options[0] = e.detail.value}  />
+          </IonItem>
+          <IonItem className='mt-3' fill='outline'>
+            <IonLabel position="floating">Ingrese opción 2</IonLabel>
+            <IonInput onIonChange={(e:any) => question.options[1] = e.detail.value}  />
+          </IonItem>
+          <IonItem className='mt-3' fill='outline'>
+          <IonLabel position="floating">Tipo</IonLabel>
+            <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => question.type = e.detail.value}>
+              <IonSelectOption value="multiple">Múltiple</IonSelectOption>
+              <IonSelectOption value="single">Unica</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+        </IonContent>
+      </IonModal>
+
+      <IonModal className='modal-texto' id="example-modal" ref={modal3} trigger="open-image2" >
+        <IonHeader >
+          <IonToolbar className='px-2'>
+            <IonButtons slot='start'>
+              <IonButton onClick={addText} >Guardar</IonButton>
+            </IonButtons>
+
+            <IonButtons slot='end'>
+              <IonButton onClick={dismiss} >Cancelar</IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent className="ion-padding">
+            <input type="file"></input>
+          <IonItem className='mt-3' fill='outline'>
+            <IonLabel position="floating">Ingrese opción 1</IonLabel>
+            <IonInput onIonChange={(e:any) => question.options[0] = e.detail.value}  />
+          </IonItem>
+          <IonItem className='mt-3' fill='outline'>
+            <IonLabel position="floating">Ingrese opción 2</IonLabel>
+            <IonInput onIonChange={(e:any) => question.options[1] = e.detail.value}  />
+          </IonItem>
+          <IonItem className='mt-3' fill='outline'>
+            <IonLabel position="floating">Ingrese opción 3</IonLabel>
+            <IonInput onIonChange={(e:any) => question.options[2] = e.detail.value}  />
+          </IonItem>
+          <IonItem className='mt-3' fill='outline'>
+          <IonLabel position="floating">Tipo</IonLabel>
+            <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => question.type = e.detail.value}>
+              <IonSelectOption  value="multiple">Múltiple</IonSelectOption>
+              <IonSelectOption value="single">Unica</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+        </IonContent>
+      </IonModal>
+
+      <IonModal className='modal-texto' ref={modal} trigger="open-text" >
+        <IonHeader >
+          <IonToolbar className='px-2'>
+            <IonButtons slot='start'>
+              <IonButton onClick={addText} >Guardar</IonButton>
+            </IonButtons>
+
+            <IonButtons slot='end'>
+              <IonButton onClick={dismiss} >Cancelar</IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+
+        <IonContent className="ion-padding">
+          <IonItem fill="solid">
+            <IonLabel position="floating">Ingrese el texto</IonLabel>
+            <IonTextarea onIonChange={(e:any) => {question.options[0] = e.detail.value;question.type = "text"}}  ></IonTextarea>
           </IonItem>
         </IonContent>
       </IonModal>

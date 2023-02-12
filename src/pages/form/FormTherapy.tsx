@@ -1,27 +1,50 @@
 
-import { IonCard, IonContent, IonHeader, IonCol, IonCardHeader, IonItem, IonPage, IonLabel, IonRow, IonInput, IonCardTitle, IonCardSubtitle, IonCardContent } from '@ionic/react';
+import { IonCard, IonList, IonContent, IonButton,IonToast, IonCol, IonCardHeader, IonItem, IonPage, IonLabel, IonRow, IonInput, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon } from '@ionic/react';
 import { useParams } from 'react-router';
-import { useState } from 'react';
-import { useIonViewWillEnter } from "@ionic/react";
+import { useState, useEffect } from 'react';
 import axios from '../../helpers/axiosInterceptor';
 import { Therapy } from '../../helpers/interfaces';
 import moment from 'moment'
+import Form from '../../components/Form';
 
 const FormTherapy: React.FC = (props: any) => {
   let { id }: any = useParams();
-  const [therapy, setTherapy] = useState<Therapy>()
-  const [message, setMessage] = useState()
+  
   const [name, setName] = useState()
+  const [email, setEmail] = useState()
 
-  useIonViewWillEnter(() => {
-    async function getTherapy() {
-      const response = await axios.get("/therapy/" + id)
-      setTherapy(response.data)
-      setMessage(response.data.errors)
-    }
-    getTherapy();
+  const [message, setMessage] = useState()
+  const [therapy, setTherapy] = useState<Therapy>()
+  const [questions, setQuestions] = useState([])
 
+
+  const getData = async (callback: Function) => {
+    axios.get("/therapy/" + id).then(res => {
+      setTherapy(res.data)
+      setMessage(res.data.errors)
+
+      let questions = JSON.parse(res.data.questions)
+      setQuestions(questions)
+      localStorage['questions'] = JSON.stringify(questions);
+    }).finally(() => {
+    })
+
+  }
+
+  useEffect(() => {
+    getData(() => {
+    })
   }, []);
+
+  const onRSubmit = async (e: any) => {
+    const response:any = await axios.post("/exams",{
+      'questions':localStorage['questions'],
+      'therapy_id':therapy?.id,
+      name,
+      email
+    })
+    setMessage(response?.message)
+  }
 
   return (
     <IonPage>
@@ -59,10 +82,32 @@ const FormTherapy: React.FC = (props: any) => {
                       <IonCol size-sm="12" size-md="6" size="12">
                         <IonItem >
                           <IonLabel position="floating">Correo electrónico</IonLabel>
-                          <IonInput value={name} onIonChange={(e: any) => setName(e.detail.value!)} required type='text' placeholder="Correo electrónico" > </IonInput>
+                          <IonInput value={email} onIonChange={(e: any) => setEmail(e.detail.value!)} required type='email' placeholder="Correo electrónico" > </IonInput>
                         </IonItem>
                       </IonCol>
                     </IonRow>
+                  </IonCardContent>
+                </IonCard>
+              </IonCol>
+            </IonRow>
+            <IonRow className='justify-content-center mt-2'>
+              <IonCol size-sm="12" size-md="7" size="12">
+                <IonCard>
+                  <IonCardHeader>
+                    <IonCardTitle >Preguntas</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    <IonList>
+                      {questions?.map((question: any, index) =>
+                        <IonItem lines="none"  key={index}>
+                          <Form question={question} />
+                        </IonItem>
+                      )}
+                    </IonList>
+
+                    <IonButton onClick={onRSubmit} className='mt-4'>
+                      Enviar
+                    </IonButton>
                   </IonCardContent>
                 </IonCard>
               </IonCol>
@@ -79,6 +124,23 @@ const FormTherapy: React.FC = (props: any) => {
             </IonCol>
           </IonRow>
         )}
+
+        {message && (
+          <IonToast
+            isOpen={(message) ? true : false}
+            duration={4000}
+            keyboardClose={true}
+            buttons={[
+              {
+                text: 'Cerrar',
+                role: 'cancel',
+              }
+            ]}
+            message={message}
+            position="bottom"
+          />
+        )}
+        { }
       </IonContent>
     </IonPage>
   )
