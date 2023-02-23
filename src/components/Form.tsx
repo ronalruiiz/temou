@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { updateQuestion } from '../pages/dashboard/CreateTherapy/TherapyServices';
-import { IonText, IonRadioGroup, IonRadio, IonLabel, IonItem, IonCheckbox } from '@ionic/react';
+import { IonText, IonRadioGroup, IonRadio, IonLabel, IonItem, IonCheckbox, IonCol, IonRow  } from '@ionic/react';
 
 
 const Form = (props) => {
@@ -21,7 +21,20 @@ const Form = (props) => {
     };
 
     return (
-        <React.Fragment>
+        <IonRow style={{width:"100%"}}>
+        {props.question.image && (
+            <IonCol size-sm="12" size-md="6" size="12">
+                <IonItem lines="none" className='mt-3' >
+                    
+                        <img
+                            src={props.question.image}
+                            alt="Preview"
+                            style={{ width: '220px'}}
+                        />
+                    
+                </IonItem>
+            </IonCol>)}
+            <IonCol size-sm="12" size-md="6" size="12">
             {props.question.type === 'text' ? (
                 <>
                     {props.question.options.map((option, index) => (
@@ -51,7 +64,8 @@ const Form = (props) => {
                     ))}
                 </>
             )}
-        </React.Fragment>
+            </IonCol>
+        </IonRow>
     );
 };
 

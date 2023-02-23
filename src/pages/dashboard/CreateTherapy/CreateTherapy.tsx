@@ -9,11 +9,12 @@ import { add, close, chevronUp, documentText, imageOutline, save, imageSharp } f
 import Question from '../../../components/Question';
 
 
-interface question{
-  id:number
-  options:string[]
-  response: number|number[]
-  type:string
+interface question {
+  id: number
+  options: string[]
+  image: any
+  response: number | number[]
+  type: string
 }
 
 
@@ -24,10 +25,12 @@ const CreateTherarapy: React.FC = (props: any) => {
   const [description, SetDescription] = useState("");
   const [visibility, setVisibility] = useState<any>([]);
   const [expiration, setExpiration] = useState<any>([]);
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
 
   const [questions, setQuestions] = useState<any>([]);
-  const [question] = useState<question>({id:0,options:[],response:0,type:""});
+  const [question] = useState<question>({ id: 0, options: [], image: {}, response: 0, type: "" });
 
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -41,7 +44,7 @@ const CreateTherarapy: React.FC = (props: any) => {
   }
 
   useEffect(() => {
-    localStorage['questions'] = '[]';
+    localStorage.setItem('questions','[]');
     search();
   }, []);
 
@@ -62,11 +65,30 @@ const CreateTherarapy: React.FC = (props: any) => {
   const addText = () => {
     question.id = Math.round(Math.random() * 100000);
     
+    question.image = preview
     saveQuestion(question)
     dismiss();
     search()
     question.options = []
+    question.image = ""
+    setPreview(null)
   }
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    if (selectedFile) {
+      const reader: any = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setPreview(null);
+    }
+  };
+
+  /*Send data api*/
 
   const onRSubmit = (e: any) => {
     e.preventDefault()
@@ -75,8 +97,9 @@ const CreateTherarapy: React.FC = (props: any) => {
       name: name,
       description: description,
       visibility: Boolean(visibility),
+      image: preview,
       type: type?.toLowerCase(),
-      questions:JSON.stringify(questions),
+      questions: JSON.stringify(questions),
       expiration: moment(expiration).format("D-M-Y")
     })
     localStorage['questions'] = '[]';
@@ -111,7 +134,7 @@ const CreateTherarapy: React.FC = (props: any) => {
               </IonCol>
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonList className='mt-4'>
-                  {questions.map((question: any,index) =>
+                  {questions.map((question: any, index) =>
                     <IonItem key={index}>
                       <Question question={question} />
                       <IonIcon onClick={() => remove(question.id)} icon={close} slot="end"></IonIcon>
@@ -199,17 +222,26 @@ const CreateTherarapy: React.FC = (props: any) => {
         </IonHeader>
 
         <IonContent className="ion-padding">
-            <input type="file"></input>
+          <input type="file" onChange={handleFileChange}></input>
+          <IonItem lines="none" className='mt-3' >
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                style={{ width: '200px', marginTop: 16 }}
+              />
+            )}
+          </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Ingrese opción 1</IonLabel>
-            <IonInput onIonChange={(e:any) => question.options[0] = e.detail.value}  />
+            <IonInput onIonChange={(e: any) => question.options[0] = e.detail.value} />
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Ingrese opción 2</IonLabel>
-            <IonInput onIonChange={(e:any) => question.options[1] = e.detail.value}  />
+            <IonInput onIonChange={(e: any) => question.options[1] = e.detail.value} />
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
-          <IonLabel position="floating">Tipo</IonLabel>
+            <IonLabel position="floating">Tipo</IonLabel>
             <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => question.type = e.detail.value}>
               <IonSelectOption value="multiple">Múltiple</IonSelectOption>
               <IonSelectOption value="single">Unica</IonSelectOption>
@@ -232,23 +264,32 @@ const CreateTherarapy: React.FC = (props: any) => {
         </IonHeader>
 
         <IonContent className="ion-padding">
-            <input type="file"></input>
+          <input type="file" onChange={handleFileChange}></input>
+          <IonItem lines="none" className='mt-3' >
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                style={{ width: '200px', marginTop: 16 }}
+              />
+            )}
+          </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Ingrese opción 1</IonLabel>
-            <IonInput onIonChange={(e:any) => question.options[0] = e.detail.value}  />
+            <IonInput onIonChange={(e: any) => question.options[0] = e.detail.value} />
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Ingrese opción 2</IonLabel>
-            <IonInput onIonChange={(e:any) => question.options[1] = e.detail.value}  />
+            <IonInput onIonChange={(e: any) => question.options[1] = e.detail.value} />
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Ingrese opción 3</IonLabel>
-            <IonInput onIonChange={(e:any) => question.options[2] = e.detail.value}  />
+            <IonInput onIonChange={(e: any) => question.options[2] = e.detail.value} />
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
-          <IonLabel position="floating">Tipo</IonLabel>
+            <IonLabel position="floating">Tipo</IonLabel>
             <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => question.type = e.detail.value}>
-              <IonSelectOption  value="multiple">Múltiple</IonSelectOption>
+              <IonSelectOption value="multiple">Múltiple</IonSelectOption>
               <IonSelectOption value="single">Unica</IonSelectOption>
             </IonSelect>
           </IonItem>
@@ -271,7 +312,7 @@ const CreateTherarapy: React.FC = (props: any) => {
         <IonContent className="ion-padding">
           <IonItem fill="solid">
             <IonLabel position="floating">Ingrese el texto</IonLabel>
-            <IonTextarea onIonChange={(e:any) => {question.options[0] = e.detail.value;question.type = "text"}}  ></IonTextarea>
+            <IonTextarea onIonChange={(e: any) => { question.options[0] = e.detail.value; question.type = "text" }}  ></IonTextarea>
           </IonItem>
         </IonContent>
       </IonModal>
