@@ -37,7 +37,7 @@ const FormTherapy: React.FC = (props: any) => {
   }, []);
 
   const onRSubmit = async (e: any) => {
-    const response:any = await axios.post("/exams",{
+    const response:any = await axios.post("/exam",{
       'questions':localStorage['questions'],
       'therapy_id':therapy?.id,
       name,
