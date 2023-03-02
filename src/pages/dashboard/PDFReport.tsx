@@ -1,5 +1,5 @@
 import { PDFViewer } from '@react-pdf/renderer';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../../helpers/axiosInterceptor';
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     textAlign: 'center',
-    marginBottom:"20px"
+    marginBottom: "20px"
   },
   text: {
     margin: 5,
@@ -30,25 +30,25 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
     fontFamily: 'Times-Roman'
   },
-  table:{
-    borderWidth:1,
-    marginHorizontal:20,
-    flexFlow:1
+  table: {
+    borderWidth: 1,
+    marginHorizontal: 20,
+    flexFlow: 1
   },
-  tableRow:{
-    flexDirection:"row"
+  tableRow: {
+    flexDirection: "row"
   },
-  tableCellHeader:{
-    margin:2,
-    fontSize:10
+  tableCellHeader: {
+    margin: 2,
+    fontSize: 10
   },
-  headerBg:{
-    borderStyle:"solid",
-    borderWidth:1
+  headerBg: {
+    borderStyle: "solid",
+    borderWidth: 1
   },
-  tableCell:{
-    margin:2,
-    fontSize:12
+  tableCell: {
+    margin: 2,
+    fontSize: 12
   }
 });
 
@@ -58,8 +58,40 @@ Font.register({
 });
 
 
+const ResultQuestion = ({ exam }) => {
 
-const ReportResults = (props) => (
+  const results: any = []
+
+  const questions = JSON.parse(exam.questions)
+
+  questions.forEach((question,index) => {
+    if (question.type == "single") {
+      if (question.response != null || question.response != undefined) {
+        results.push({"question":index,"response":[question.options[question.response]]})
+      }
+    }
+    if (question.type == "multiple") {
+      const questionResponse:any = []
+
+      question.response.forEach(element => {
+        if (element != null || element != undefined) {
+          questionResponse.push(question.options[element])
+        }
+      });
+
+      results.push({"question":index,"response":questionResponse})
+    }
+  })
+  return (
+    <>
+    {results.map(result => (<Text style={styles.text}>- Pregunta {result.question} : {result.response}</Text>))}
+    </>
+  )
+}
+
+
+const ReportResults = (props) => {
+  return (
     <Document>
       <Page size="A4" style={styles.body}>
         <Text style={styles.title}>
@@ -73,39 +105,44 @@ const ReportResults = (props) => (
             <Text style={styles.text} > Descripción: {therapy.description}</Text>
             <Text style={styles.text} > Tipo: {therapy.type}</Text>
             <Text style={styles.text}> Usuarios:</Text>
-            
+
             {therapy.exams.map((exam) => (
-              <Text style={styles.text}> - {exam.user.email}</Text>
+              <>
+                <Text style={styles.text}> - {exam.user.email}</Text>
+                <Text style={styles.text}>Respuestas de Usuarios: </Text>
+                <ResultQuestion exam={exam} />
+              </>
             ))}
-            
+
           </>
         ))}
       </Page>
     </Document>
-);
+  )
+};
 
 const PDFReport = () => {
- const [loader, setLoader] = useState(false)
- const [therapies, setTherapies] = useState<[]>()
+  const [loader, setLoader] = useState(false)
+  const [therapies, setTherapies] = useState<[]>()
 
-    useEffect(() => {
-        async function usersExam() {
-        const response = await axios.get("/all-users")
-        setTherapies(response.data)
-        setLoader(true)
-        }
-        usersExam()
-    }, []);
+  useEffect(() => {
+    async function usersExam() {
+      const response = await axios.get("/all-users")
+      setTherapies(response.data)
+      setLoader(true)
+    }
+    usersExam()
+  }, []);
 
-    return (
-        <>
-        {loader == true && (
-            <PDFViewer style={{width:"100%",height:"100%"}}>
-                <ReportResults data={therapies} />
-            </PDFViewer>
-        )}
+  return (
+    <>
+      {loader == true && (
+        <PDFViewer style={{ width: "100%", height: "100%" }}>
+          <ReportResults data={therapies} />
+        </PDFViewer>
+      )}
 
-        </>
-    );
+    </>
+  );
 }
 export default PDFReport

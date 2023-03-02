@@ -16,7 +16,7 @@ const Form = (props) => {
             question.response = []
         }
         
-        question.response[index] = value
+        question.response[index] = index
         updateQuestion(props.question.id,question)
     };
 
@@ -46,10 +46,10 @@ const Form = (props) => {
                     ))}
                 </>
             ) : props.question.type === 'single' ? (
-                <IonRadioGroup value={props.question.response} onIonChange={handleOptionChange}>
+                <IonRadioGroup onIonChange={handleOptionChange}>
                     {props.question.options.map((option, index) => (
                         <IonItem lines="none" key={index}>
-                            <IonRadio value={index} />
+                            <IonRadio value={index}/>
                             <IonLabel>{'\u00A0'}{option}</IonLabel>
                         </IonItem>
                     ))}
