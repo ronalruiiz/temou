@@ -1,27 +1,42 @@
-import { IonAvatar, IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
-import { download, save, search, close } from 'ionicons/icons';
+import { IonAvatar, IonButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonRow, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { download } from 'ionicons/icons';
 import LineChart from '../../charts/LineaChart';
-import './../../assets/scss/custom/pages/reports.scss'
-import BarCharts from '../../charts/BarCharts';
 import RadarCharts from '../../charts/RadarCharts';
 import LineDos from '../../charts/LineDos';
 import { useEffect, useState } from 'react';
 import axios from '../../helpers/axiosInterceptor';
 import moment from 'moment'
+import './../../assets/scss/custom/pages/reports.scss'
+import { Link } from 'react-router-dom';
+
+
 
 const ReportesdeResultado: React.FC = () => {
   const [users, setUsers] = useState<[]>()
   const [search, setSearch] = useState("")
-  const [isOpen, setIsOpen] = useState(false);
+  const [therapies, setTherapies] = useState<[]>()
+
   const [exams, setExams] = useState([])
   const [loader, setLoader] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [user, setUser] = useState<any>({})
 
   useEffect(() => {
     async function usersExam() {
       const response = await axios.get("/users-exams")
       setUsers(response.data)
+
+    }
+    async function usersAll() {
+      const response = await axios.get("/all-users")
+      setTherapies(response.data)
+
     }
     usersExam()
+    usersExam()
+    usersAll()
   }, []);
 
 
@@ -30,7 +45,6 @@ const ReportesdeResultado: React.FC = () => {
     setExams(response.data)
     setLoader(false)
   }
-
 
   return (
     <IonPage>
@@ -52,7 +66,7 @@ const ReportesdeResultado: React.FC = () => {
             </IonCol>
             <IonCol size-sm="12" size-md="4" size="12">
               <IonItem lines='none'>
-                <button color='primary' className="btn btn-primary" slot='end'><IonIcon icon={download} /> Generar Reporte</button>
+                <Link to={"/pdf-report"} color='primary' className="btn btn-primary" slot='end'><IonIcon icon={download} /> Generar Reporte</Link>
               </IonItem>
             </IonCol>
           </IonRow>
@@ -69,11 +83,8 @@ const ReportesdeResultado: React.FC = () => {
                   </IonAvatar>
                   <IonToolbar>
                     <IonLabel className='nombres-estudiantes'>{user.name} | {user.email}</IonLabel>
-                    <IonButton color="tertiary" slot='end'>
+                    <IonButton onClick={() => { setUser(user); setIsOpen2(true) }} color="tertiary" slot='end'>
                       Informacion
-                    </IonButton>
-                    <IonButton color="danger" slot='end'>
-                      Dashboard
                     </IonButton>
                     <IonButton onClick={() => { onResolveExams(user.id); setLoader(true); setIsOpen(true) }} color="success" slot='end'>
                       Dashboard
@@ -83,17 +94,20 @@ const ReportesdeResultado: React.FC = () => {
               )
             })}
         </IonList>
-
-        <IonCard>
-          <LineChart />
-        </IonCard>
+        {therapies && (
+          <IonCard>
+            <IonCardContent>
+              <LineChart therapies={therapies} />
+            </IonCardContent>
+          </IonCard>
+        )}
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Report</IonTitle>
           </IonToolbar>
         </IonHeader>
 
-        <IonModal isOpen={isOpen} trigger="open-dashboard" >
+        <IonModal className='dashboard-modal' isOpen={isOpen} trigger="open-dashboard" >
           <IonToolbar>
 
             <IonButtons slot="end">
@@ -104,7 +118,6 @@ const ReportesdeResultado: React.FC = () => {
           <IonCard>
             <IonItem>
               <LineDos />
-              <BarCharts />
               <RadarCharts />
             </IonItem>
           </IonCard>
@@ -129,6 +142,25 @@ const ReportesdeResultado: React.FC = () => {
 
         </IonModal>
 
+        {/* Information User */}
+        <IonModal isOpen={isOpen2} trigger="open-dashboard" >
+          <IonToolbar>
+            <IonButtons slot="end">
+              <IonButton onClick={() => { setIsOpen2(false); setUser(null) }}>Close</IonButton>
+            </IonButtons>
+          </IonToolbar>
+          <IonContent className="ion-padding">
+            <IonItem>
+              Nombre: {user?.name}
+            </IonItem>
+            <IonItem>
+              Email: {user?.email}
+            </IonItem>
+            <IonItem>
+              Fecha de Registro: {user?.created_at}
+            </IonItem>
+          </IonContent>
+        </IonModal>
       </IonContent>
 
     </IonPage>

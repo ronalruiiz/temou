@@ -25,6 +25,8 @@ import Login from './pages/auth/Login';
 import Dashboard from './pages/dashboard/Index';
 import RestrictedRoute from './helpers/restrictedRoutes';
 import FormTherapy from './pages/form/FormTherapy';
+import PrivateRoute from './helpers/privateRoutes';
+import PDFReport from './pages/dashboard/PDFReport';
 
 setupIonicReact();
 
@@ -37,6 +39,7 @@ const App: React.FC = () => {
           <Route path={`/auth/login`} component={Login} exact={true}/>
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/form/:id" component={FormTherapy} />
+          <PrivateRoute path={`/pdf-report`} component={PDFReport} exact={true}/>
         </IonRouterOutlet>  
       </IonReactRouter>
     </IonApp>

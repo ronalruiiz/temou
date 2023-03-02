@@ -11,6 +11,7 @@
     "@capacitor/status-bar": "4.0.1",
     "@ionic/react": "^6.0.0",
     "@ionic/react-router": "^6.0.0",
+    "@react-pdf/renderer": "^3.1.6",
     "@redux-devtools/extension": "^3.2.5",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
