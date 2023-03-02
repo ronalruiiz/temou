@@ -109,7 +109,7 @@ const ReportResults = (props) => {
             {therapy.exams.map((exam) => (
               <>
                 <Text style={styles.text}> - {exam.user.email}</Text>
-                <Text style={styles.text}>Respuestas de Usuarios: </Text>
+                <Text style={styles.text}>  Respuestas de Usuarios: </Text>
                 <ResultQuestion exam={exam} />
               </>
             ))}

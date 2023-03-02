@@ -40,8 +40,23 @@ const data = [
   },
 ];
 
-export default function RadarCharts(){
- 
+export default function RadarCharts({exams}){
+  let data = []
+  exams.forEach(exam => {
+    const questions = JSON.parse(exam.questions).filter((question) => question.type!="text")
+    let responses = 0
+    
+    questions.forEach(question=>{
+      if(question.type == "single" && question.response != null ){
+        responses += 1
+      }if(question.type == "multiple" && question.response.length > 0 ){
+        responses += 1
+      }
+    })
+    
+    let result =  (responses / questions.length ) *100
+    data.push({"subject":exam.therapy.name,"A":responses,"B":questions.length,"fullMark":result})
+  });
   
     return (
       <ResponsiveContainer width="100%" aspect={2}>
@@ -49,8 +64,7 @@ export default function RadarCharts(){
           <PolarGrid />
           <PolarAngleAxis dataKey="subject" />
           <PolarRadiusAxis angle={30} domain={[0, 150]} />
-          <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-          <Radar name="Lily" dataKey="B" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+          
           <Legend />
         </RadarChart>
       </ResponsiveContainer>

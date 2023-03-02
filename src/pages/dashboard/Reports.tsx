@@ -39,6 +39,21 @@ const ReportesdeResultado: React.FC = () => {
     usersAll()
   }, []);
 
+  const resultExam = (exam)=>{
+    const questions = JSON.parse(exam.questions).filter((question) => question.type!="text")
+    let responses = 0
+    
+    questions.forEach(question=>{
+      if(question.type == "single" && question.response != null ){
+        responses += 1
+      }if(question.type == "multiple" && question.response.length > 0 ){
+        responses += 1
+      }
+    })
+    
+    let result =  (responses / questions.length ) *100
+    return result
+  }
 
   const onResolveExams = async (userid) => {
     const response: any = await axios.get("/exam/" + userid)
@@ -117,8 +132,8 @@ const ReportesdeResultado: React.FC = () => {
 
           <IonCard>
             <IonItem>
-              <LineDos />
-              <RadarCharts />
+              <LineDos exams={exams} />
+              <RadarCharts exams={exams} />
             </IonItem>
           </IonCard>
           <IonList>
@@ -130,7 +145,7 @@ const ReportesdeResultado: React.FC = () => {
                     <IonItem>
                       <IonLabel>{exam.therapy.name}</IonLabel>
 
-                      <IonButton color="danger" slot='end'>50% completada</IonButton>
+                      <IonButton color="primary" slot='end'>{resultExam(exam)}% completada</IonButton>
 
                     </IonItem>
                   </>

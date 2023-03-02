@@ -21,8 +21,12 @@ export function removeQuestion(id: String) {
 
 export function saveQuestion(question: any) {
     let questions = getQuestion();
-    questions.push(question)
-    localStorage['questions'] = JSON.stringify(questions);
+    if(questions.length <= 9){
+        questions.push(question)
+        localStorage['questions'] = JSON.stringify(questions);
+        return null;
+    }
+    alert("Solo se pueden ingresar 10 preguntas")
 }
 
 export function updateQuestion(id,question){

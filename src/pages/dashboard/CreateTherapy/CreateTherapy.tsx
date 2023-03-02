@@ -13,7 +13,7 @@ interface question {
   id: number
   options: string[]
   image: any
-  response: number | number[]
+  response: any | any[]
   type: string
 }
 
@@ -30,7 +30,7 @@ const CreateTherarapy: React.FC = (props: any) => {
 
 
   const [questions, setQuestions] = useState<any>([]);
-  const [question] = useState<question>({ id: 0, options: [], image: {}, response: 0, type: "" });
+  const [question] = useState<question>({ id: 0, options: [], image: {}, response: null, type: "" });
 
 
   const modal = useRef<HTMLIonModalElement>(null);
