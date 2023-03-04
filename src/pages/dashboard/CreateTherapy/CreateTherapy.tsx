@@ -23,14 +23,14 @@ const CreateTherarapy: React.FC = (props: any) => {
 
   const [name, setName] = useState("");
   const [description, SetDescription] = useState("");
-  const [visibility, setVisibility] = useState<any>([]);
+  const [visibility, setVisibility] = useState("true");
   const [expiration, setExpiration] = useState<any>([]);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-
+  const [typeQuestion,setTypeQuestion] = useState("single")
 
   const [questions, setQuestions] = useState<any>([]);
-  const [question] = useState<question>({ id: 0, options: [], image: {}, response: null, type: "" });
+  const [question] = useState<question>({ id: 0, options: [], image: {}, response: null, type: "single" });
 
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -150,7 +150,7 @@ const CreateTherarapy: React.FC = (props: any) => {
               <IonCol size-sm="12" size-md="12" size="12">
                 <IonItem fill="outline">
                   <IonLabel position="floating">Visibilidad</IonLabel>
-                  <IonSelect placeholder="Seleccione Visibilidad" onIonChange={(e) => setVisibility(e.detail.value)}>
+                  <IonSelect value={visibility} placeholder="Seleccione Visibilidad" onIonChange={(e) => setVisibility(e.detail.value)}>
                     <IonSelectOption value="true">Pública</IonSelectOption>
                     <IonSelectOption value="false">Privada</IonSelectOption>
                   </IonSelect>
@@ -242,7 +242,7 @@ const CreateTherarapy: React.FC = (props: any) => {
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Tipo</IonLabel>
-            <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => question.type = e.detail.value}>
+            <IonSelect value={typeQuestion} placeholder="Seleccionar tipo" onIonChange={(e) => {question.type = e.detail.value;setTypeQuestion(e.detail.value)}}>
               <IonSelectOption value="multiple">Múltiple</IonSelectOption>
               <IonSelectOption value="single">Unica</IonSelectOption>
             </IonSelect>
@@ -288,7 +288,7 @@ const CreateTherarapy: React.FC = (props: any) => {
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Tipo</IonLabel>
-            <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => question.type = e.detail.value}>
+            <IonSelect value={typeQuestion} placeholder="Seleccionar tipo" onIonChange={(e) => {setTypeQuestion(e.detail.value); question.type = e.detail.value}}>
               <IonSelectOption value="multiple">Múltiple</IonSelectOption>
               <IonSelectOption value="single">Unica</IonSelectOption>
             </IonSelect>

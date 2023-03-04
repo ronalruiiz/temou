@@ -27,6 +27,7 @@ const ReportesdeResultado: React.FC = () => {
     async function usersExam() {
       const response = await axios.get("/users-exams")
       setUsers(response.data)
+      console.log(response.data)
 
     }
     async function usersAll() {
@@ -40,19 +41,22 @@ const ReportesdeResultado: React.FC = () => {
   }, []);
 
   const resultExam = (exam)=>{
-    const questions = JSON.parse(exam.questions).filter((question) => question.type!="text")
+    const questions = JSON.parse(exam.questions).filter((question) => question.type=="single" || question.type == "multiple")
     let responses = 0
-    
+    console.log(exam.therapy.name)
     questions.forEach(question=>{
-      if(question.type == "single" && question.response != null ){
-        responses += 1
-      }if(question.type == "multiple" && question.response.length > 0 ){
-        responses += 1
+      console.log(question)
+      if (question.response != null){
+        if(question.type == "single"){
+          responses += 1
+        }
+        if(question.type == "multiple" && question.response.length > 0 ){
+          responses += 1
+        }
       }
     })
-    
     let result =  (responses / questions.length ) *100
-    return result
+    return parseInt(result.toString())
   }
 
   const onResolveExams = async (userid) => {

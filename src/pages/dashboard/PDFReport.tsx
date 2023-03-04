@@ -65,6 +65,7 @@ const ResultQuestion = ({ exam }) => {
   const questions = JSON.parse(exam.questions)
 
   questions.forEach((question,index) => {
+  
     if (question.type == "single") {
       if (question.response != null || question.response != undefined) {
         results.push({"question":index,"response":[question.options[question.response]]})
@@ -72,13 +73,13 @@ const ResultQuestion = ({ exam }) => {
     }
     if (question.type == "multiple") {
       const questionResponse:any = []
-
-      question.response.forEach(element => {
-        if (element != null || element != undefined) {
-          questionResponse.push(question.options[element])
-        }
-      });
-
+      if (question.response != null){ 
+        question.response.forEach(element => {
+          if (element != null || element != undefined) {
+            questionResponse.push(question.options[element])
+          }
+        });
+      }
       results.push({"question":index,"response":questionResponse})
     }
   })

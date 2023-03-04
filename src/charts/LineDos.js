@@ -8,15 +8,17 @@ export default function LineDos({exams}){
     let responses = 0
     
     questions.forEach(question=>{
-      if(question.type == "single" && question.response != null ){
-        responses += 1
-      }if(question.type == "multiple" && question.response.length > 0 ){
-        responses += 1
+      if (question.response != null){
+        if(question.type == "single" ){
+          responses += 1
+        }if(question.type == "multiple" && question.response.length > 0 ){
+          responses += 1
+        }
       }
     })
     
     let result =  (responses / questions.length ) *100
-    data.push({"name":exam.therapy.name,"uv":result})
+    data.push({"name":exam.therapy.name,"uv":parseInt(result)})
   });
 
     return (

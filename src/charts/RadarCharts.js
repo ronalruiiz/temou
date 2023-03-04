@@ -43,19 +43,21 @@ const data = [
 export default function RadarCharts({exams}){
   let data = []
   exams.forEach(exam => {
-    const questions = JSON.parse(exam.questions).filter((question) => question.type!="text")
+    const questions = JSON.parse(exam.questions).filter((question) => question.type=="single" || question.type == "multiple")
     let responses = 0
     
     questions.forEach(question=>{
-      if(question.type == "single" && question.response != null ){
-        responses += 1
-      }if(question.type == "multiple" && question.response.length > 0 ){
-        responses += 1
+      if (question.response != null){
+        if(question.type == "single" ){
+          responses += 1
+        }if(question.type == "multiple" && question.response.length > 0 ){
+          responses += 1
+        }
       }
     })
     
     let result =  (responses / questions.length ) *100
-    data.push({"subject":exam.therapy.name,"A":responses,"B":questions.length,"fullMark":result})
+    data.push({"subject":exam.therapy.name,"A":responses,"B":questions.length,"fullMark":parseInt(result)})
   });
   
     return (
