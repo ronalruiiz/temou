@@ -44,6 +44,7 @@ const FormTherapy: React.FC = (props: any) => {
       email
     })
     setMessage(response?.message)
+    location.href = "/"
   }
 
   return (
