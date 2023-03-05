@@ -40,22 +40,22 @@ const ReportesdeResultado: React.FC = () => {
     usersAll()
   }, []);
 
-  const resultExam = (exam)=>{
-    const questions = JSON.parse(exam.questions).filter((question) => question.type=="single" || question.type == "multiple")
+  const resultExam = (exam) => {
+    const questions = JSON.parse(exam.questions).filter((question) => question.type == "single" || question.type == "multiple")
     let responses = 0
     console.log(exam.therapy.name)
-    questions.forEach(question=>{
+    questions.forEach(question => {
       console.log(question)
-      if (question.response != null){
-        if(question.type == "single"){
+      if (question.response != null) {
+        if (question.type == "single") {
           responses += 1
         }
-        if(question.type == "multiple" && question.response.length > 0 ){
+        if (question.type == "multiple" && question.response.length > 0) {
           responses += 1
         }
       }
     })
-    let result =  (responses / questions.length ) *100
+    let result = (responses / questions.length) * 100
     return parseInt(result.toString())
   }
 
@@ -134,30 +134,30 @@ const ReportesdeResultado: React.FC = () => {
             </IonButtons>
           </IonToolbar>
 
-          <IonCard>
+          <IonContent>
             <IonItem>
               <LineDos exams={exams} />
               <RadarCharts exams={exams} />
             </IonItem>
-          </IonCard>
-          <IonList>
-            <IonGrid>
-              {!loader && (<>
-                {exams?.map((exam: any) => (
-                  <>
-                    <IonLabel>{moment(exam.therapy.created_at).format("D-M-Y")} </IonLabel>
-                    <IonItem>
-                      <IonLabel>{exam.therapy.name}</IonLabel>
 
-                      <IonButton color="primary" slot='end'>{resultExam(exam)}% completada</IonButton>
+            <IonList>
+              <IonGrid>
+                {!loader && (<>
+                  {exams?.map((exam: any) => (
+                    <>
+                      <IonLabel>{moment(exam.therapy.created_at).format("D-M-Y")} </IonLabel>
+                      <IonItem>
+                        <IonLabel>{exam.therapy.name}</IonLabel>
 
-                    </IonItem>
-                  </>
-                ))}
-              </>)}
-            </IonGrid>
-          </IonList>
+                        <IonButton color="primary" slot='end'>{resultExam(exam)}% completada</IonButton>
 
+                      </IonItem>
+                    </>
+                  ))}
+                </>)}
+              </IonGrid>
+            </IonList>
+          </IonContent>
 
         </IonModal>
 
