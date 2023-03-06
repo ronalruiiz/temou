@@ -27,10 +27,9 @@ const CreateTherarapy: React.FC = (props: any) => {
   const [expiration, setExpiration] = useState<any>([]);
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [typeQuestion,setTypeQuestion] = useState("single")
 
   const [questions, setQuestions] = useState<any>([]);
-  const [question] = useState<question>({ id: 0, options: [], image: {}, response: null, type: "single" });
+  const [question] = useState<question>({ id: 0, options: [], image: {}, response: null, type: "text" });
 
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -242,7 +241,7 @@ const CreateTherarapy: React.FC = (props: any) => {
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Tipo</IonLabel>
-            <IonSelect value={typeQuestion} placeholder="Seleccionar tipo" onIonChange={(e) => {question.type = e.detail.value;setTypeQuestion(e.detail.value)}}>
+            <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => {question.type = e.detail.value}}>
               <IonSelectOption value="multiple">Múltiple</IonSelectOption>
               <IonSelectOption value="single">Unica</IonSelectOption>
             </IonSelect>
@@ -288,7 +287,7 @@ const CreateTherarapy: React.FC = (props: any) => {
           </IonItem>
           <IonItem className='mt-3' fill='outline'>
             <IonLabel position="floating">Tipo</IonLabel>
-            <IonSelect value={typeQuestion} placeholder="Seleccionar tipo" onIonChange={(e) => {setTypeQuestion(e.detail.value); question.type = e.detail.value}}>
+            <IonSelect placeholder="Seleccionar tipo" onIonChange={(e) => {question.type = e.detail.value}}>
               <IonSelectOption value="multiple">Múltiple</IonSelectOption>
               <IonSelectOption value="single">Unica</IonSelectOption>
             </IonSelect>
