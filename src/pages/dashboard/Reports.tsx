@@ -27,7 +27,7 @@ const ReportesdeResultado: React.FC = () => {
     async function usersExam() {
       const response = await axios.get("/users-exams")
       setUsers(response.data)
-      console.log(response.data)
+      
 
     }
     async function usersAll() {
@@ -43,9 +43,8 @@ const ReportesdeResultado: React.FC = () => {
   const resultExam = (exam) => {
     const questions = JSON.parse(exam.questions).filter((question) => question.type == "single" || question.type == "multiple")
     let responses = 0
-    console.log(exam.therapy.name)
     questions.forEach(question => {
-      console.log(question)
+      
       if (question.response != null) {
         if (question.type == "single") {
           responses += 1
