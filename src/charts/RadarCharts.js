@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Radar, RadarChart, PolarGrid, Legend, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 // const data = [
 //   {
@@ -57,19 +57,30 @@ export default function RadarCharts({exams}){
     })
     
     let result =  (responses / questions.length ) *100
-    data.push({"subject":exam.therapy.name,"A":responses,"B":questions.length})
+    data.push({"subject":exam.therapy.name,"respuestas":responses,"preguntas":questions.length})
   });
   
     return (
       <ResponsiveContainer width="100%" aspect={2}>
-        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey="subject" />
-          <PolarRadiusAxis  />
-          <Radar name="Respondidas" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-          <Radar name="Preguntas" dataKey="B" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
+        <BarChart
+          width={500}
+          height={300}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
           <Legend />
-        </RadarChart>
+          <Bar dataKey="respuestas" fill="#8884d8" />
+          <Bar dataKey="preguntas" fill="#82ca9d" />
+        </BarChart>
       </ResponsiveContainer>
     );
   }
